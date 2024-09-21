@@ -8,6 +8,7 @@ app = Flask(__name__)
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
+class_names = model.names
 
 def generate_frames():
     camera = cv2.VideoCapture(0)
@@ -15,6 +16,11 @@ def generate_frames():
         print("Error: Could not open camera.")
         return
 
+    try:
+        while True:
+            success, frame = camera.read()
+            if not success:
+                break
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
