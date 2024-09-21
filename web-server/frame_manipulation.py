@@ -29,6 +29,8 @@ def generate_frames(filter: Filter):
                     apply_filter(lambda frame: cv2.GaussianBlur(frame, (5, 5), 0), frame_resized)
                 case FilterType.MEDIAN_FILTER:
                     apply_filter(lambda frame: cv2.medianBlur(frame, 5), frame_resized)
+                case FilterType.BILATERAL_FILTER:
+                    apply_filter(lambda frame: cv2.bilateralFilter(frame, 9, 75,75), frame_resized)
 
             ret, buffer = cv2.imencode('.jpg', frame_resized)
             frame = buffer.tobytes()
