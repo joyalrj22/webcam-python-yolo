@@ -1,10 +1,15 @@
 import cv2
+import torch
+
+from dtos.camera_filters import Filter, FilterType
+
+model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+class_names = model.names
 
 
-def generate_frames(model, class_names):
+def generate_frames(filter: Filter):
     camera = cv2.VideoCapture(0)
     if not camera.isOpened():
-        print("Error: Could not open camera.")
         return
 
     try:
@@ -13,18 +18,9 @@ def generate_frames(model, class_names):
             if not success:
                 break
 
-            # Resize frame for faster processing
             frame_resized = cv2.resize(frame, (640, 480))
 
-            # Perform object detection
-            results = model(frame_resized)
-
-            # Draw bounding boxes and labels on the frame
-            for result in results.xyxy[0]:
-                x1, y1, x2, y2, conf, cls = result
-                label = class_names[int(cls)]
-                cv2.rectangle(frame_resized, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-                cv2.putText(frame_resized, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            object_classification(frame_resized, filter.type)
 
             ret, buffer = cv2.imencode('.jpg', frame_resized)
             frame = buffer.tobytes()
@@ -32,3 +28,21 @@ def generate_frames(model, class_names):
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
     finally:
         camera.release()
+
+
+def run_yolo_model(frame):
+    model_results = model(frame)
+    for result in model_results.xyxy[0]:
+        x1, y1, x2, y2, conf, cls = result
+        yield x1, y1, x2, y2, conf, cls
+
+
+def object_classification(frame, filter_type: FilterType):
+    for x1, y1, x2, y2, conf, cls in run_yolo_model(frame):
+        label = class_names[int(cls)]
+        cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+        cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+
+# def box_filter(frame)
+
+

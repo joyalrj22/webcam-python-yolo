@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import HelloWorld from './components/VideoStream.vue'
+import VideoStream from './components/VideoStream.vue'
 
 export default {
   name: 'App',
