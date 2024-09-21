@@ -2,12 +2,12 @@
   <div id="app">
     <img :key="imgKey" :src="videoFeedUrl" alt="Live Stream" />
     <div class="button-set">
-        <b-button variant="primary" @click="filterType='NONE'"> <b-icon icon="card-image"/> No Filter </b-button>
-        <b-button variant="primary" @click="filterType='BOX_FILTER'"> <b-icon icon="bounding-box-circles"/> Box Filter </b-button>
-        <b-button variant="primary" @click="filterType='GAUSSIAN_FILTER'"> <b-icon icon="bezier"/> Gaussian Filter </b-button>
-        <b-button variant="primary" @click="filterType='MEDIAN_FILTER'"> <b-icon icon="border-middle"/> Median Filter </b-button>
-        <b-button variant="primary" @click="filterType='BILATERAL_FILTER'"> <b-icon icon="bezier-2"/> Bilateral Filter </b-button>
-        <b-button variant="primary" @click="filterType='OBJECT_DETECTION'"> <b-icon icon="person"/> Object Detection </b-button>
+        <b-button :variant="filterTypeStyle('NONE')" @click="filterType='NONE'"> <b-icon icon="card-image"/> No Filter </b-button>
+        <b-button :variant="filterTypeStyle('BOX_FILTER')" @click="filterType='BOX_FILTER'"> <b-icon icon="bounding-box-circles"/> Box Filter </b-button>
+        <b-button :variant="filterTypeStyle('GAUSSIAN_FILTER')" @click="filterType='GAUSSIAN_FILTER'"> <b-icon icon="bezier"/> Gaussian Filter </b-button>
+        <b-button :variant="filterTypeStyle('MEDIAN_FILTER')" @click="filterType='MEDIAN_FILTER'"> <b-icon icon="border-middle"/> Median Filter </b-button>
+        <b-button :variant="filterTypeStyle('BILATERAL_FILTER')" @click="filterType='BILATERAL_FILTER'"> <b-icon icon="bezier-2"/> Bilateral Filter </b-button>
+        <b-button :variant="filterTypeStyle('OBJECT_DETECTION')" @click="filterType='OBJECT_DETECTION'"> <b-icon icon="person"/> Object Detection </b-button>
     </div>
   </div>
 </template>
@@ -28,6 +28,11 @@ export default {
   watch: {
     filterType() {
         this.imgKey += 1
+    }
+  },
+  methods: {
+    filterTypeStyle(mode) {
+        return mode === this.filterType ? "primary" : "secondary"
     }
   }
 };
@@ -52,5 +57,6 @@ export default {
 
 .btn {
     margin-left: 3px;
+    margin-top: 1px;
 }
 </style>
