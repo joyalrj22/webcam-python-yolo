@@ -9,7 +9,7 @@
 export default {
   data() {
     return {
-      videoFeedUrl: `http://localhost:5000/video_feed?type=${'NONE'}`
+      videoFeedUrl: `http://localhost:5000/video_feed?type=${'GAUSSIAN_FILTER'}`
     };
   }
 };

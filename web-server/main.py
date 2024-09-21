@@ -11,7 +11,7 @@ CORS(app)
 @app.route('/video_feed')
 @cross_origin()
 def video_feed():
-    filter_type = request.args.get('type')
+    filter_type = request.args.get('type', 'NONE')
     return Response(generate_frames(Filter(type=FilterType[filter_type])), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
