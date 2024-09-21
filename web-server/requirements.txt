@@ -6,3 +6,4 @@ requests==2.32.3
 Pillow==10.4.0
 ultralytics==8.2.98
 flask-cors==5.0.0
+pydantic==2.9.2
