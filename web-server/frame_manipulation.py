@@ -20,7 +20,15 @@ def generate_frames(filter: Filter):
 
             frame_resized = cv2.resize(frame, (640, 480))
 
-            object_classification(frame_resized, filter.type)
+            match filter.type:
+                case FilterType.OBJECT_DETECTION:
+                    object_classification(frame_resized)
+                case FilterType.BOX_FILTER:
+                    apply_filter(lambda frame: cv2.blur(frame, (5, 5)), frame_resized)
+                case FilterType.GAUSSIAN_FILTER:
+                    apply_filter(lambda frame: cv2.GaussianBlur(frame, (5, 5), 0), frame_resized)
+                case FilterType.MEDIAN_FILTER:
+                    apply_filter(lambda frame: cv2.medianBlur(frame, 5), frame_resized)
 
             ret, buffer = cv2.imencode('.jpg', frame_resized)
             frame = buffer.tobytes()
@@ -37,12 +45,16 @@ def run_yolo_model(frame):
         yield x1, y1, x2, y2, conf, cls
 
 
-def object_classification(frame, filter_type: FilterType):
+def object_classification(frame):
     for x1, y1, x2, y2, conf, cls in run_yolo_model(frame):
         label = class_names[int(cls)]
         cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
         cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
-# def box_filter(frame)
 
-
+def apply_filter(filter_fn, frame):
+    for x1, y1, x2, y2, conf, cls in run_yolo_model(frame):
+        if class_names[int(cls)] == 'person':
+            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            frame[y1:y2, x1:x2] = filter_fn(frame[y1:y2, x1:x2])
