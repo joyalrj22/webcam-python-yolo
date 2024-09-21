@@ -2,12 +2,12 @@
   <div id="app">
     <img :key="imgKey" :src="videoFeedUrl" alt="Live Stream" />
     <div class="button-set">
-        <b-button variant="primary" @click="filterType='NONE'"> No Filter </b-button>
-        <b-button variant="primary" @click="filterType='BOX_FILTER'"> Box Filter </b-button>
-        <b-button variant="primary" @click="filterType='GAUSSIAN_FILTER'"> Gaussian Filter </b-button>
-        <b-button variant="primary" @click="filterType='MEDIAN_FILTER'"> Median Filter </b-button>
-        <b-button variant="primary" @click="filterType='BILATERAL_FILTER'"> Bilateral Filter </b-button>
-        <b-button variant="primary" @click="filterType='OBJECT_DETECTION'"> Object Detection </b-button>
+        <b-button variant="primary" @click="filterType='NONE'"> <b-icon icon="card-image"/> No Filter </b-button>
+        <b-button variant="primary" @click="filterType='BOX_FILTER'"> <b-icon icon="bounding-box-circles"/> Box Filter </b-button>
+        <b-button variant="primary" @click="filterType='GAUSSIAN_FILTER'"> <b-icon icon="bezier"/> Gaussian Filter </b-button>
+        <b-button variant="primary" @click="filterType='MEDIAN_FILTER'"> <b-icon icon="border-middle"/> Median Filter </b-button>
+        <b-button variant="primary" @click="filterType='BILATERAL_FILTER'"> <b-icon icon="bezier-2"/> Bilateral Filter </b-button>
+        <b-button variant="primary" @click="filterType='OBJECT_DETECTION'"> <b-icon icon="person"/> Object Detection </b-button>
     </div>
   </div>
 </template>
@@ -35,19 +35,22 @@ export default {
 
 <style>
 #app {
-  text-align: center;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
-img {
-  width: 100%;
-  height: 100%;
-  border: 2px solid #000;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 .image-container {
-  position: relative;
-  display: inline-block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: inline-block;
+}
+
+.btn {
+    margin-left: 3px;
 }
 </style>
