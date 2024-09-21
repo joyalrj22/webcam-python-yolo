@@ -1,12 +1,19 @@
-# This is a sample Python script.
+import torch
+import cv2
+from flask import Flask, Response
+from flask_cors import cross_origin
+
+app = Flask(__name__)
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def generate_frames():
+    camera = cv2.VideoCapture(0)
+    if not camera.isOpened():
+        print("Error: Could not open camera.")
+        return
 
 
 # Press the green button in the gutter to run the script.
