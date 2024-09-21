@@ -22,9 +22,8 @@ def generate_frames():
             if not success:
                 break
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+            # Resize frame for faster processing
+            frame_resized = cv2.resize(frame, (640, 480))
 
             # Perform object detection
             results = model(frame_resized)
